@@ -61,8 +61,13 @@
         handleArr = handlers[type] || [];
         i = handleArr.length;
 
-        while (i--) {
-            handleArr[i] === func && handleArr.splice(i, 1);
+        if (!func) {
+            this.handlers[type] = [];
+        }
+        else {
+            while (i--) {
+                handleArr[i] === func && handleArr.splice(i, 1);
+            }
         }
     };
 

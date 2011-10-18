@@ -1,0 +1,39 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+<meta charset="UTF-8">
+<title></title>
+<script src="../evtEmit.js"></script>
+<script>
+(function () {
+
+    window.onload = function () {
+    
+        var Hoge = function () {};
+
+        Hoge.prototype.test = 'edo';
+        EvtEmit.attach(Hoge.prototype);
+
+        var hoge = new Hoge;
+        hoge.bind('test', test);
+
+        function test() {
+            alert('test');
+        }
+
+        setTimeout(function () {
+            hoge.trigger('test');
+            /*hoge.unbind('test', test);*/
+        }, 1000);
+
+        setTimeout(function () {
+            hoge.trigger('test');
+        }, 3000);
+    };
+}());
+</script>
+</head>
+<body>
+<p id="hoge">hoge</p>
+</body>
+</html>

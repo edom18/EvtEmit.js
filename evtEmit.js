@@ -3,7 +3,7 @@
  * @auther edo.
  */
 
-;(function (global) {
+;(function (scope) {
 
     var EvtEmit = function () {};
 
@@ -157,6 +157,6 @@
     /**
      * Export
      */
-    global.EvtEmit = EvtEmit;
+    scope.EvtEmit = EvtEmit;
 
 }(this));

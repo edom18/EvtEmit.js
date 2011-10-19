@@ -9,31 +9,60 @@
 
     window.onload = function () {
     
-        var Hoge = function () {};
+        var emitTest = function () {};
 
-        Hoge.prototype.test = 'edo';
-        EvtEmit.attach(Hoge.prototype);
+        emitTest.update = function (val) {
 
-        var hoge = new Hoge;
-        hoge.bind('test', test);
+            this.val = val;
+            this.trigger('update', 'updated!');
+        };
 
-        function test() {
-            alert('test');
+        /**
+         * Attached event to `emitTest`
+         */
+        EvtEmit.attach(emitTest);
+
+        emitTest.bind('update', handleUpdate);
+
+        /////////////////////////////////////////////////
+        /**
+         * Local functions.
+         */
+        function handleUpdate(val) {
+
+            alert(val);
         }
 
-        setTimeout(function () {
-            hoge.trigger('test');
-            /*hoge.unbind('test', test);*/
-        }, 1000);
+        /////////////////////////////////////////////////
+        /**
+         * DOM Event
+         */
+        document.getElementById('updateTest').onclick = function () {
 
-        setTimeout(function () {
-            hoge.trigger('test');
-        }, 3000);
+            emitTest.update('test value');
+        };
+        document.getElementById('bindEvent').onclick = function () {
+
+            alert('bind event!');
+            emitTest.bind('update', handleUpdate);
+        };
+        document.getElementById('unbindEvent').onclick = function () {
+
+            alert('unbind event!');
+            emitTest.unbind('update', handleUpdate);
+        };
     };
 }());
 </script>
 </head>
 <body>
-<p id="hoge">hoge</p>
+<p>
+Update testを押下すると設定されているupdateイベントを実行します。<br />
+bind/unbindのボタンを押すと、updateイベントのbind/unbindを実行します。<br />
+bindを複数回実行すると、実行した回数だけイベント発火時に実行されます。
+</p>
+<p><input type="button" value="Update test" id="updateTest" /></p>
+<p><input type="button" value="bind event" id="bindEvent" /></p>
+<p><input type="button" value="unbind event" id="unbindEvent" /></p>
 </body>
 </html>

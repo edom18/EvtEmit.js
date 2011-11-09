@@ -1,10 +1,28 @@
 /**
- * Event emitter v0.1
- * @auther edo.
+ * Event emitter
+ * @version 0.11
+ * @auther Kazuya Hiruma.
+ *
+ * Copyright 2011 Kazuya Hiruma.
+ * Licensed under the MIT License:
+ *
+ * http://css-eblog.com/
  */
-
 ;(function (scope) {
 
+    /**
+     * @namespace
+     *
+     * @example
+     * var targetObj = {};
+     * EvtEmit.attach(targetObj);
+     * //attach event
+     * targetObj.bind('update', function (data) {
+     *         alert('update!');
+     * });
+     * //dispatch event
+     * targetObj.trigger('update', data);
+     */
     var EvtEmit = function () {};
 
     /**
@@ -147,7 +165,7 @@
 
 
     /**
-     * Export
+     * @export EvtEmit as window.EvtEmit
      */
     scope.EvtEmit = EvtEmit;
 

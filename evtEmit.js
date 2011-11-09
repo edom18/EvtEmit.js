@@ -127,21 +127,13 @@
 
         function _extendObject(parent, obj, deepCopy) {
 
-            var v, type, k, key;
+            var val, type, key;
 
-            for (k in obj) {
-                v = obj[k];
-                type = detectType(v);
+            for (key in obj) {
+                val = obj[key];
+                type = detectType(val);
 
-                if (/^\+/.test(k) && type == 'Object') {
-                  key = k.replace(/^\+/, '');
-                  parent[key] = _extendObject(parent[key], v, deepCopy);
-                }
-                else {
-                  parent[k] = (deepCopy && re.test(type))
-                    ? _cloneObject(v, type)
-                    : v;
-                }
+                parent[key] = (deepCopy && re.test(type)) ? _cloneObject(val, type) : val;
             }
 
             return parent;

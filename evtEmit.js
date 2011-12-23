@@ -1,6 +1,6 @@
 /**
  * Event emitter
- * @version 0.11
+ * @version 0.2
  * @auther Kazuya Hiruma.
  *
  * Copyright 2011 Kazuya Hiruma.
@@ -8,7 +8,7 @@
  *
  * http://css-eblog.com/
  */
-;(function (scope) {
+(function (scope) {
 
     /**
      * @namespace
@@ -25,9 +25,9 @@
      */
     var EvtEmit = function () {};
 
-    /**
-     * Trigger the event.
-     */
+    /* ------------------------------------------------
+         Trigger the event.
+    --------------------------------------------------- */
     EvtEmit.prototype.trigger = function (type, optData) {
 
         var handlers,
@@ -48,10 +48,10 @@
         }
     };
 
-    /**
-     * Bind function.
-     */
-    EvtEmit.prototype.bind = function (type, func) {
+    /* ------------------------------------------------
+        Bind function.
+    --------------------------------------------------- */
+    EvtEmit.prototype.bind = function (type, func, context) {
     
         var handlers = this.handlers || (this.handlers = {});
 
@@ -62,9 +62,11 @@
         (handlers[type] || (handlers[type] = [])).push(func);
     };
 
-    /**
-     * Unbind function.
-     */
+    EvtEmit.prototype.on = EvtEmit.prototype.bind;
+
+    /* ------------------------------------------------
+        Unbind function.
+    --------------------------------------------------- */
     EvtEmit.prototype.unbind = function (type, func) {
     
         var handlers,
@@ -89,10 +91,12 @@
         }
     };
 
+    EvtEmit.prototype.off = EvtEmit.prototype.unbind;
+
     ////////////////////////////////////////////////////////////////////////
-    /**
-     * Defined class method.
-     */
+    /* ------------------------------------------------
+        Defined class method.
+    --------------------------------------------------- */
     EvtEmit.attach = (function() {
 
         var re = new RegExp('Object|Array|Date|Arguments', 'i');
@@ -164,9 +168,8 @@
     })();
 
 
-    /**
-     * @export EvtEmit as window.EvtEmit
-     */
+    /* ------------------------------------------------
+        Export EvtEmit as window.EvtEmit
+    --------------------------------------------------- */
     scope.EvtEmit = EvtEmit;
-
 }(this));

@@ -32,7 +32,7 @@
 
         var handlers,
             handleArr,
-            len, i = 0,
+            l,
             func;
 
         if (!type) {
@@ -41,10 +41,11 @@
 
         handlers = this.handlers || (this.handlers = {});
         handleArr = handlers[type] || [];
-        len = handleArr.length;
+        l = handleArr.length;
 
-        for (; i < len; i++) {
-            (func = handleArr[i]) && func.call(this, optData);
+        while(l--) {
+            (func = handleArr[l]) &&
+            func[0].call(func[1] || this, optData);
         }
     };
 
@@ -59,9 +60,10 @@
             return false;
         }
 
-        (handlers[type] || (handlers[type] = [])).push(func);
+        (handlers[type] || (handlers[type] = [])).push([func, context]);
     };
 
+    // Alias to `bind`
     EvtEmit.prototype.on = EvtEmit.prototype.bind;
 
     /* ------------------------------------------------
@@ -91,6 +93,7 @@
         }
     };
 
+    // Alias to `unbind`
     EvtEmit.prototype.off = EvtEmit.prototype.unbind;
 
     ////////////////////////////////////////////////////////////////////////

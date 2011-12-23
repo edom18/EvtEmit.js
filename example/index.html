@@ -9,7 +9,7 @@
 
     window.onload = function () {
     
-        var emitTest = function () {};
+        var emitTest = function emitTest() {};
 
         emitTest.update = function (val) {
 
@@ -31,6 +31,7 @@
         function handleUpdate(val) {
 
             alert(val);
+            console.log(this);
         }
 
         /////////////////////////////////////////////////
@@ -43,13 +44,13 @@
         };
         document.getElementById('bindEvent').onclick = function () {
 
+            emitTest.on('update', handleUpdate, window);
             alert('bind event!');
-            emitTest.bind('update', handleUpdate);
         };
         document.getElementById('unbindEvent').onclick = function () {
 
+            emitTest.off('update', handleUpdate);
             alert('unbind event!');
-            emitTest.unbind('update', handleUpdate);
         };
     };
 }());

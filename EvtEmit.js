@@ -66,6 +66,25 @@
     // Alias to `bind`
     EvtEmit.prototype.on = EvtEmit.prototype.bind;
 
+
+    /* ------------------------------------------------
+        Invoke onece.
+    --------------------------------------------------- */
+    EvtEmit.prototype.one = function (type, func, context) {
+
+        var self = this;
+
+        function _func () {
+            self.off(type, _func);
+            func.apply(context, arguments);
+            context = null;
+            self  = null;
+            _func = null;
+        }
+
+        this.on(type, _func, context);
+    };
+
     /* ------------------------------------------------
         Unbind function.
     --------------------------------------------------- */
@@ -79,7 +98,7 @@
             return false;
         }
 
-        handlers = this.handlers || (this.handlers = {});
+        handlers  = this.handlers || (this.handlers = {});
         handleArr = handlers[type] || [];
         i = handleArr.length;
 
@@ -88,7 +107,7 @@
         }
         else {
             while (i--) {
-                handleArr[i] === func && handleArr.splice(i, 1);
+                handleArr[i][0] === func && handleArr.splice(i, 1);
             }
         }
     };

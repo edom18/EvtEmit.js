@@ -11,8 +11,8 @@
 (function (scope) {
 
     /**
-     * @namespace
-     *
+     * EvtEmit class.
+     * @constructor
      * @example
      * var targetObj = {};
      * EvtEmit.attach(targetObj);
@@ -23,12 +23,9 @@
      * //dispatch event
      * targetObj.trigger('update', data);
      */
-    var EvtEmit = function () {};
+    function EvtEmit() {}
 
-    /* ------------------------------------------------
-         Trigger the event.
-    --------------------------------------------------- */
-    EvtEmit.prototype.trigger = function (type, optData) {
+    function trigger (type, optData) {
 
         var handlers,
             handleArr,
@@ -47,13 +44,9 @@
             (func = handleArr[l]) &&
             func[0].call(func[1] || this, optData);
         }
-    };
+    }
 
-    /* ------------------------------------------------
-        Bind function.
-    --------------------------------------------------- */
-    EvtEmit.prototype.bind = function (type, func, context) {
-    
+    function bind(type, func, context) {
         var handlers = this.handlers || (this.handlers = {});
 
         if (!type) {
@@ -61,16 +54,9 @@
         }
 
         (handlers[type] || (handlers[type] = [])).push([func, context]);
-    };
+    }
 
-    // Alias to `bind`
-    EvtEmit.prototype.on = EvtEmit.prototype.bind;
-
-
-    /* ------------------------------------------------
-        Invoke onece.
-    --------------------------------------------------- */
-    EvtEmit.prototype.one = function (type, func, context) {
+    function one(type, func, context) {
 
         var self = this;
 
@@ -83,12 +69,9 @@
         }
 
         this.on(type, _func, context);
-    };
+    }
 
-    /* ------------------------------------------------
-        Unbind function.
-    --------------------------------------------------- */
-    EvtEmit.prototype.unbind = function (type, func) {
+    function unbind(type, func) {
     
         var handlers,
             handleArr,
@@ -110,10 +93,40 @@
                 handleArr[i][0] === func && handleArr.splice(i, 1);
             }
         }
-    };
+    }
 
-    // Alias to `unbind`
-    EvtEmit.prototype.off = EvtEmit.prototype.unbind;
+    /////////////////////////////////////////////////////////////////////
+    
+    //Shortcut.
+    EvtEmit.fn = EvtEmit.prototype;
+
+
+    /* ------------------------------------------------
+         Trigger the event.
+    --------------------------------------------------- */
+    EvtEmit.fn.trigger = trigger;
+    EvtEmit.fn.fire    = trigger;
+
+
+    /* ------------------------------------------------
+        Bind function.
+    --------------------------------------------------- */
+    EvtEmit.fn.bind = bind;
+    EvtEmit.fn.on   = bind;
+
+
+    /* ------------------------------------------------
+        Invoke at onece.
+    --------------------------------------------------- */
+    EvtEmit.prototype.one = one;
+
+
+    /* ------------------------------------------------
+        Unbind function.
+    --------------------------------------------------- */
+    EvtEmit.prototype.unbind = unbind;
+    EvtEmit.prototype.off    = unbind;
+
 
     ////////////////////////////////////////////////////////////////////////
     /* ------------------------------------------------
@@ -127,12 +140,10 @@
          * util functions
          */
         function detectType(o) {
-
             return Object.prototype.toString.call(o).replace(/^\[object (.+)\]$/, '$1');
         }
 
         function makeArray(args, sp) {
-
             if (!sp) {
                 sp = 0;
             }
@@ -171,9 +182,9 @@
 
         function _extendObject(parent, obj, deepCopy) {
 
-            var val, type, key;
+            var val, type;
 
-            for (key in obj) {
+            for (var key in obj) {
                 val = obj[key];
                 type = detectType(val);
 
@@ -184,7 +195,6 @@
         }
 
         return function(target) {
-
             _extendObject(target, new EvtEmit, true);
         };
     })();
